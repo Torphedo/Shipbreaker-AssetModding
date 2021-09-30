@@ -8,6 +8,7 @@ curl -# -o emip\Jupiter.emip https://raw.githubusercontent.com/Torphedo/Shipbrea
 curl -# -o emip\Moon.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Moon.emip
 curl -# -o emip\NoBloom.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/NoBloom.emip
 curl -# -o emip\AlphaTitleScreen.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/AlphaTitleScreen.emip
+curl -# -o emip\ModdingSticker.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/ModdingSticker.emip
 curl -# -o emip\Cheats.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Cheats.xdelta
 curl -# -o emip\Carbon.Core.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Carbon.Core.xdelta
 echo Downloading tools...
@@ -28,35 +29,32 @@ echo      2. Moon over Earth
 echo      3. No Bloom
 echo      4. Alpha Title Screen
 echo      5. Cheats
-echo      6. Exit
+echo      6. Modding Sticker
+echo      7. Exit
 echo.
 echo.
 set /P ACTION="Enter the number of your selection:"
 cls
+cd emip\
 goto :case_%ACTION%
 
 :case_1
-cd emip\
 set emip=Jupiter.emip
 goto :apply_emip
 
 :case_2
-cd emip\
 set emip=Moon.emip
 goto :apply_emip
 
 :case_3
-cd emip\
 set emip=NoBloom.emip
 goto :apply_emip
 
 :case_4
-cd emip\
 set emip=AlphaTitleScreen.emip
 goto :apply_emip
 
 :case_5
-cd emip\
 xdelta -d -s ..\Shipbreaker_Data\Managed\BBI.Unity.Game.dll Cheats.xdelta ..\Shipbreaker_Data\Managed\BBI.Unity.Game.dll.mod
 del ..\Shipbreaker_Data\Managed\BBI.Unity.Game.dll
 ren ..\Shipbreaker_Data\Managed\BBI.Unity.Game.dll.mod BBI.Unity.Game.dll
@@ -65,6 +63,10 @@ del ..\Shipbreaker_Data\Managed\Carbon.Core.dll
 ren ..\Shipbreaker_Data\Managed\Carbon.Core.dll.mod Carbon.Core.dll
 echo Patch Applied.
 goto :post_install
+
+:case_6
+set emip=ModdingSticker.emip
+goto :apply_emip
 
 :apply_emip
 UABE\AssetBundleExtractor applyemip %emip% ..
