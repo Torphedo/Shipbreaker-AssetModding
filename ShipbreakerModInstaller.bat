@@ -1,7 +1,8 @@
 @echo off
 
 :setup
-if exist "emip\Jupiter.emip" goto :start
+if exist "emip\check.version4" goto :start
+if exist emip\ (rmdir /S /Q emip\)
 mkdir emip
 echo Downloading mod files...
 curl -# -o emip\Jupiter.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Jupiter.emip
@@ -11,6 +12,8 @@ curl -# -o emip\AlphaTitleScreen.emip https://raw.githubusercontent.com/Torphedo
 curl -# -o emip\ModdingSticker.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/ModdingSticker.emip
 curl -# -o emip\Cheats.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Cheats.xdelta
 curl -# -o emip\Carbon.Core.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Carbon.Core.xdelta
+curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/mod_config.ini
+curl -# -o emip\check.version4 https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/check.version4
 echo Downloading tools...
 curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
 curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
