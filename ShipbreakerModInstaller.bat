@@ -1,5 +1,4 @@
 @echo off
-
 :setup
 if exist "emip\check.version4" goto :start
 if exist emip\ (rmdir /S /Q emip\)
@@ -48,17 +47,17 @@ echo      3. No Bloom
 echo      4. Alpha Title Screen
 echo      5. Cheats
 echo      6. Modding Sticker
-echo      7. Exit
+echo      7. Maps
+echo      8. Exit
 echo.
 echo.
-set /P selection="Select a mod to install: "
+set /P selection="Select an option: "
 cls
-
-IF %selection%==1 (set emip=Jupiter.emip & goto :apply_emip)
-IF %selection%==2 (set emip=Moon.emip & goto :apply_emip)
-IF %selection%==3 (set emip=NoBloom.emip & goto :apply_emip)
-IF %selection%==4 (set emip=AlphaTitleScreen.emip & goto :apply_emip)
-IF %selection%==5 (
+if %selection%==1 (set emip=Jupiter.emip & goto :apply_emip)
+if %selection%==2 (set emip=Moon.emip & goto :apply_emip)
+if %selection%==3 (set emip=NoBloom.emip & goto :apply_emip)
+if %selection%==4 (set emip=AlphaTitleScreen.emip & goto :apply_emip)
+if %selection%==5 (
 	set DLL=BBI.Unity.Game
 	call :delta_patch
 	set DLL=Carbon.Core
@@ -66,7 +65,29 @@ IF %selection%==5 (
 	echo Patch Applied.
 	goto :post_install
 )
-IF %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
+if %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
+if %selection%==7 (
+	set %map%=true
+	echo When you select a map from this list, it will be loaded instead of the cutting bay.
+	echo To revert to the normal map, verify your game files, or select the same map again.
+	echo.
+	echo.
+	echo       1. Master Jack (just the Master Jack, a ship, and infinite void)
+	echo       2. Elemental Test Map (fun object spawners, replaces Master Jack)
+	echo       3. Subsystem Test Map (replaces Master Jack)
+	echo       4. QA map (TONS of super old scrapped concepts from early in development)
+	echo       5. Back
+	echo.
+	echo.
+	set /P map="Select a map: "
+	if %map%==1 (set num1=8&set num2=6)
+	if %map%==2 (set num1=9&set num2=7)
+	if %map%==3 (set num1=10&set num2=9)
+	if %map%==4 (set num1=5&set num2=8)
+	if %map%==5 (goto :start)
+	call :scene_swap
+)
+if %selection%==8 (exit)
 
 :delta_patch
 xdelta -d -s ..\Shipbreaker_Data\Managed\%DLL%.dll %DLL%.xdelta ..\Shipbreaker_Data\Managed\%DLL%.dll.mod
@@ -74,10 +95,22 @@ del ..\Shipbreaker_Data\Managed\%DLL%.dll
 ren ..\Shipbreaker_Data\Managed\%DLL%.dll.mod %DLL%.dll
 exit /b
 
+:scene_swap
+echo Swapping Unity scene files...
+ren ..\Shipbreaker_Data\level%num1% level%num1%.temp
+if exist ..\Shipbreaker_Data\level%num1%.resS (ren ..\Shipbreaker_Data\level%num1%.resS level%num1%.resS.temp)
+ren ..\Shipbreaker_Data\level%num2% level%num1%
+if exist ..\Shipbreaker_Data\level%num2%.resS (ren ..\Shipbreaker_Data\level%num2%.resS level%num1%.resS)
+ren ..\Shipbreaker_Data\level%num1%.temp level%num2%
+if exist ..\Shipbreaker_Data\level%num1%.resS.temp (ren ..\Shipbreaker_Data\level%num1%.resS.temp level%num2%.resS)
+echo Done.
+goto :post_install
+
 :apply_emip
 UABE\AssetBundleExtractor applyemip %emip% ..
 echo Patch applied.
 
 :post_install
 set /P return="Return to list of mods? (y/n) "
-IF %return%==y (cd .. & goto :start)
+if %return%==y (cd .. & goto :start)
+if %return%==n (exit)
