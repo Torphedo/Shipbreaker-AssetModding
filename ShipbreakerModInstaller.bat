@@ -21,17 +21,17 @@ set file="Carbon.Core.xdelta"
 call :curl_bin
 set file="check.version4"
 call :curl_bin
-curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
+curl --parallel-immediate -Z -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
 echo Downloading tools...
-curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
-curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
+curl --parallel-immediate -Z -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
+curl --parallel-immediate -Z -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
 powershell -command "Expand-Archive emip\UABE.zip emip"
 ren emip\64bit UABE
 del emip\UABE.zip
 goto :start
 
 :curl_bin
-curl -# -o emip\%file% https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/%file%
+curl --parallel-immediate -Z -# -o emip\%file% https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/%file%
 exit /b
 
 :start
