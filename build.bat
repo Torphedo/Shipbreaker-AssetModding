@@ -9,4 +9,5 @@ cargo build --release
 echo.
 echo Build Finished.
 copy target\release\shipbreaker-mod-installer.exe . > NUL
+ren shipbreaker-mod-installer.exe Shipbreaker-Mod-Installer.exe > NUL
 pause
