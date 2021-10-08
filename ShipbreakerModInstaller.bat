@@ -22,7 +22,6 @@ call :curl_bin
 set file="check.version4"
 call :curl_bin
 curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
-
 echo Downloading tools...
 curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
 curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
@@ -37,6 +36,7 @@ exit /b
 
 :start
 cls
+cd emip\
 echo Welcome to Torph's Shipbreaker mod installer! If you've used
 echo mods before, please verify your game files in Steam before
 echo using, to avoid potential crashes.
@@ -53,18 +53,15 @@ echo.
 echo.
 set /P selection="Select a mod to install: "
 cls
-cd emip\
 
 IF %selection%==1 (set emip=Jupiter.emip & goto :apply_emip)
 IF %selection%==2 (set emip=Moon.emip & goto :apply_emip)
 IF %selection%==3 (set emip=NoBloom.emip & goto :apply_emip)
 IF %selection%==4 (set emip=AlphaTitleScreen.emip & goto :apply_emip)
 IF %selection%==5 (
-	set DLL=BBI.Unity.Game.dll
-	set patchname=Cheats
+	set DLL=BBI.Unity.Game
 	call :delta_patch
-	set DLL=Carbon.Core.dll
-	set patchname=Carbon.Core
+	set DLL=Carbon.Core
 	call :delta_patch
 	echo Patch Applied.
 	goto :post_install
@@ -72,9 +69,9 @@ IF %selection%==5 (
 IF %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
 
 :delta_patch
-xdelta -d -s ..\Shipbreaker_Data\Managed\%DLL% %patchname%.xdelta ..\Shipbreaker_Data\Managed\%DLL%.mod
-del ..\Shipbreaker_Data\Managed\%DLL%
-ren ..\Shipbreaker_Data\Managed\%DLL%.mod %DLL%
+xdelta -d -s ..\Shipbreaker_Data\Managed\%DLL%.dll %DLL%.xdelta ..\Shipbreaker_Data\Managed\%DLL%.dll.mod
+del ..\Shipbreaker_Data\Managed\%DLL%.dll
+ren ..\Shipbreaker_Data\Managed\%DLL%.dll.mod %DLL%.dll
 exit /b
 
 :apply_emip
