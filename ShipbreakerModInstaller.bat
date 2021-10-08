@@ -1,6 +1,7 @@
 @echo off
+color 06
 :setup
-if exist "emip\check.version4" goto :start
+if exist "emip\check.version5" goto :start
 if exist emip\ (rmdir /S /Q emip\)
 mkdir emip
 echo Downloading mod files...
@@ -18,7 +19,7 @@ set file="BBI.Unity.Game.xdelta"
 call :curl_bin
 set file="Carbon.Core.xdelta"
 call :curl_bin
-set file="check.version4"
+set file="check.version5"
 call :curl_bin
 curl --parallel-immediate -Z -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
 echo Downloading tools...
@@ -53,6 +54,7 @@ echo.
 echo.
 set /P selection="Select an option: "
 cls
+if %selection%==8 (exit)
 if %selection%==1 (set emip=Jupiter.emip & goto :apply_emip)
 if %selection%==2 (set emip=Moon.emip & goto :apply_emip)
 if %selection%==3 (set emip=NoBloom.emip & goto :apply_emip)
@@ -67,7 +69,8 @@ if %selection%==5 (
 )
 if %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
 if %selection%==7 (
-	set %map%=true
+	:map_options
+	copy Shipbreaker_Data\level6 Shipbreaker_Data\level14
 	echo When you select a map from this list, it will be loaded instead of the cutting bay.
 	echo To revert to the normal map, verify your game files, or select the same map again.
 	echo.
@@ -76,7 +79,8 @@ if %selection%==7 (
 	echo       2. Elemental Test Map (fun object spawners, replaces Master Jack)
 	echo       3. Subsystem Test Map (replaces Master Jack)
 	echo       4. QA map (TONS of super old scrapped concepts from early in development)
-	echo       5. Back
+	echo       5. Deep Space
+	echo       6. Back
 	echo.
 	echo.
 	set /P map="Select a map: "
@@ -84,10 +88,13 @@ if %selection%==7 (
 	if %map%==2 (set num1=9&set num2=7)
 	if %map%==3 (set num1=10&set num2=9)
 	if %map%==4 (set num1=5&set num2=8)
-	if %map%==5 (goto :start)
+	if %map%==5 (set num1=14&set num2=9&call :scene_swap&set num1=8&set num2=6)
+	if %map%==6 (goto :start)
 	call :scene_swap
+	set /P return="Stay on map list? (y/n) "
+	if %return%==n (cd .. & goto :start)
+	if %return%==y (cls&goto :map_options)
 )
-if %selection%==8 (exit)
 
 :delta_patch
 xdelta -d -s ..\Shipbreaker_Data\Managed\%DLL%.dll %DLL%.xdelta ..\Shipbreaker_Data\Managed\%DLL%.dll.mod
@@ -104,7 +111,7 @@ if exist ..\Shipbreaker_Data\level%num2%.resS (ren ..\Shipbreaker_Data\level%num
 ren ..\Shipbreaker_Data\level%num1%.temp level%num2%
 if exist ..\Shipbreaker_Data\level%num1%.resS.temp (ren ..\Shipbreaker_Data\level%num1%.resS.temp level%num2%.resS)
 echo Done.
-goto :post_install
+exit /b
 
 :apply_emip
 UABE\AssetBundleExtractor applyemip %emip% ..
