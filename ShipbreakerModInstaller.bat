@@ -15,7 +15,7 @@ set file="AlphaTitleScreen.emip"
 call :curl_bin
 set file="ModdingSticker.emip"
 call :curl_bin
-set file="Cheats.xdelta"
+set file="BBI.Unity.Game.xdelta"
 call :curl_bin
 set file="Carbon.Core.xdelta"
 call :curl_bin
