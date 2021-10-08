@@ -7,12 +7,12 @@ use curl::easy::Easy;
 use user_input::get_input;
 
 fn main() {
-	let b = std::path::Path::new("emip\\check.version4").exists();
-	if b == false {
+	let b = std::path::Path::new("emip\\check.version5").exists();
+	if !b {
 		download_all();
 	}
 	print_options();
-	let selection: &str = &get_input("Select a mod to install:");
+	let selection: &str = &get_input("Select an option:");
 	match selection {
 		"1" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\Jupiter.emip ."),
 		"2" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\Moon.emip ."),
@@ -20,12 +20,14 @@ fn main() {
 		"4" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\AlphaTitleScreen.emip ."),
 		"5" => apply_cheats(),
 		"6" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\ModdingSticker.emip ."),
-		"7" => (),
+		"7" => map_menu(),
+		"8" => std::process::exit(0),
 		_ => println!("Invalid option, try again."),
 	}
-	let exit: &str = &get_input("Return to list of mods? (y/n) ");
+	let exit: &str = &get_input("Close installer? (y/n) ");
 	match exit {
-		"y" => main(),
+		"n" => main(),
+		"y" => std::process::exit(0),
 		_ => (),
 	}
 }
@@ -70,9 +72,78 @@ fn print_options() {
 	println!("      4. Alpha Title Screen");
 	println!("      5. Cheats");
 	println!("      6. Modding Sticker");
-	println!("      7. Exit Mod Installer");
+	println!("      7. Maps");
+	println!("      8. Exit Mod Installer");
 	println!(" ");
 	println!(" ");
+}
+fn map_menu() {
+	assert!( std::process::Command::new("cls").status().or_else(|_| std::process::Command::new("clear").status()).unwrap().success() );
+	println!("When you select a map from this list, it will be loaded instead of the cutting bay.");
+	println!("To revert to the normal map, verify your game files, or select the same map again.");
+	println!(" ");
+	println!(" ");
+	println!("      1. Master Jack (just the Master Jack, a ship, and infinite void)");
+	println!("      2. Elemental Test Map (fun object spawners, replaces Master Jack)");
+	println!("      3. Subsystem Test Map (replaces Master Jack)");
+	println!("      4. QA map (TONS of super old scrapped concepts from early in development)");
+	println!("      5. Deep Space");
+	println!("      6. Back");
+	println!(" ");
+	println!(" ");
+	fs::copy("Shipbreaker_Data\\level6", "Shipbreaker_Data\\level14").expect("Couldn't copy scene!"); //I needed a second empty scene for the Deep Space option
+	let map_selection: &str = &get_input("Select a map: ");
+	match map_selection {
+		"1" => swap_scenes("8","6"),
+		"2" => swap_scenes("9","7"),
+		"3" => swap_scenes("10","9"),
+		"4" => swap_scenes("5","8"),
+		"5" => { swap_scenes("8","6"); swap_scenes("9","14"); }
+		"6" => main(),
+		_ => println!("Invalid option, please try again."),
+	}
+	let exit: &str = &get_input("Stay on map list? (y/n) ");
+	match exit {
+		"n" => main(),
+		"y" => map_menu(),
+		_ => (),
+	}
+}
+fn swap_scenes(num1:&str,num2:&str) {
+	println!("Swapping Unity scene files...");
+	let first_arg = format!("Shipbreaker_Data\\level{}", num1);
+	let second_arg = format!("Shipbreaker_Data\\level{}.temp", num1);
+	fs::rename(&first_arg, &second_arg).expect("Couldn't rename scene!");
+	let exist_arg = format!(r"Shipbreaker_Data\level{}.resS", num1);
+	let exist = std::path::Path::new(&exist_arg).exists();
+	if exist {
+		let second_arg = format!(r"Shipbreaker_Data\level{}.resS.temp", num1);
+		fs::rename(&exist_arg, &second_arg).expect("Couldn't rename scene!");
+	}
+	
+	let first_arg = format!(r"Shipbreaker_Data\level{}", num2);
+	let second_arg = format!(r"Shipbreaker_Data\level{}", num1);
+	fs::rename(&first_arg, &second_arg).expect("Couldn't rename scene!");
+	
+	let exist_arg = format!(r"Shipbreaker_Data\level{}.resS", num2);
+	let exist = std::path::Path::new(&exist_arg).exists();
+	if exist {
+		let second_arg = format!(r"Shipbreaker_Data\level{}.resS", num1);
+		fs::rename(&exist_arg, &second_arg).expect("Couldn't rename scene!");
+	}
+	
+	let first_arg = format!(r"Shipbreaker_Data\level{}.temp", num1);
+	let second_arg = format!(r"Shipbreaker_Data\level{}", num2);
+	fs::rename(&first_arg, &second_arg).expect("Couldn't rename scene!");
+	
+	let exist_arg = format!(r"Shipbreaker_Data\level{}.resS.temp", num1);
+	let exist = std::path::Path::new(&exist_arg).exists();
+	if exist {
+		let second_arg = format!(r"Shipbreaker_Data\level{}.resS", num2);
+		fs::rename(&exist_arg, &second_arg).expect("Couldn't rename scene!");
+	}
+	println!(" ");
+	println!("Done.");
 }
 fn download_all() {
 	println!("Downloading mod files...");
@@ -82,10 +153,10 @@ fn download_all() {
 	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/NoBloom.emip","emip\\NoBloom.emip");
 	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/AlphaTitleScreen.emip","emip\\AlphaTitleScreen.emip");
 	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/ModdingSticker.emip","emip\\ModdingSticker.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Cheats.xdelta","emip\\Cheats.xdelta");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/BBI.Unity.Game.xdelta","emip\\BBI.Unity.Game.xdelta");
 	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Carbon.Core.xdelta","emip\\Carbon.Core.xdelta");
 	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini","mod_config.ini");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/check.version4","emip\\check.version4");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/check.version5","emip\\check.version5");
 	println!("Downloading tools...");
 	curl_download("https://raw.githubusercontent.com/NiceneNerd/BCML/master/bcml/helpers/7z.exe", "emip\\7z.exe");
 	curl_download("https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe", "emip\\xdelta.exe");
@@ -96,7 +167,7 @@ fn download_all() {
 	fs::remove_file("emip\\7z.exe").expect("Unable to delete 7zip!");
 }
 fn apply_cheats() {
-	run_exe("cmd","/C","emip\\xdelta.exe -d -s Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll emip\\Cheats.xdelta Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll.mod");
+	run_exe("cmd","/C",r"emip\xdelta.exe -n -d -s Shipbreaker_Data\Managed\BBI.Unity.Game.dll emip\BBI.Unity.Game.xdelta Shipbreaker_Data\Managed\BBI.Unity.Game.dll.mod");
 	fs::remove_file("Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll").expect("Unable to delete original DLL!");
 	fs::rename("Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll.mod", "Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll").expect("Unable to rename modded DLL!");
 	

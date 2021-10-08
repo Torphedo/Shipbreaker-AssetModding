@@ -2,3 +2,4 @@
 Cargo.lock
 *.exe
 ShipbreakerModInstaller.bat
+/emip
