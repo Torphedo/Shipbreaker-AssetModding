@@ -77,15 +77,15 @@ fn print_options() {
 fn download_all() {
 	println!("Downloading mod files...");
     fs::create_dir("emip").expect("Unable to create emip folder!");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Jupiter.emip","emip\\Jupiter.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Moon.emip","emip\\Moon.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/NoBloom.emip","emip\\NoBloom.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/AlphaTitleScreen.emip","emip\\AlphaTitleScreen.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/ModdingSticker.emip","emip\\ModdingSticker.emip");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Cheats.xdelta","emip\\Cheats.xdelta");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Carbon.Core.xdelta","emip\\Carbon.Core.xdelta");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/mod_config.ini","mod_config.ini");
-	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/check.version4","emip\\check.version4");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Jupiter.emip","emip\\Jupiter.emip");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Moon.emip","emip\\Moon.emip");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/NoBloom.emip","emip\\NoBloom.emip");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/AlphaTitleScreen.emip","emip\\AlphaTitleScreen.emip");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/ModdingSticker.emip","emip\\ModdingSticker.emip");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Cheats.xdelta","emip\\Cheats.xdelta");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Carbon.Core.xdelta","emip\\Carbon.Core.xdelta");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini","mod_config.ini");
+	curl_download("https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/check.version4","emip\\check.version4");
 	println!("Downloading tools...");
 	curl_download("https://raw.githubusercontent.com/NiceneNerd/BCML/master/bcml/helpers/7z.exe", "emip\\7z.exe");
 	curl_download("https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe", "emip\\xdelta.exe");
@@ -93,6 +93,7 @@ fn download_all() {
 	run_exe("cmd","/C","emip\\7z x -oemip\\ emip\\UABE.zip");
 	fs::remove_file("emip\\UABE.zip").expect("Unable to delete UABE.zip!");
 	fs::rename("emip\\64bit", "emip\\UABE").expect("Unable to rename UABE folder!");
+	fs::remove_file("emip\\7z.exe").expect("Unable to delete 7zip!");
 }
 fn apply_cheats() {
 	run_exe("cmd","/C","emip\\xdelta.exe -d -s Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll emip\\Cheats.xdelta Shipbreaker_Data\\Managed\\BBI.Unity.Game.dll.mod");

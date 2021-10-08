@@ -6,5 +6,7 @@ if exist "target\release\shipbreaker-mod-installer.exe" (del target\release\ship
 if exist "emip\" (rmdir /S /Q emip\)
 if exist "mod_config.ini" (del "mod_config.ini")
 cargo build --release
-copy target\release\shipbreaker-mod-installer.exe .
+echo.
+echo Build Finished.
+copy target\release\shipbreaker-mod-installer.exe . > NUL
 pause
