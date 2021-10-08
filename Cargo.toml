@@ -1,0 +1,11 @@
+[package]
+name = "shipbreaker-mod-installer"
+version = "1.0.0"
+edition = "2021"
+build = "src\\build.rs"
+
+[build-dependencies]
+winres = "0.1"
+
+[dependencies]
+curl = "0.4.38"
