@@ -12,7 +12,7 @@ fn main() {
 		download_all();
 	}
 	print_options();
-	let selection: &str = &get_input("Enter the number of the mod you'd like to install:");
+	let selection: &str = &get_input("Select a mod to install:");
 	match selection {
 		"1" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\Jupiter.emip ."),
 		"2" => run_exe("cmd","/C","emip\\UABE\\AssetBundleExtractor.exe applyemip emip\\Moon.emip ."),
@@ -23,9 +23,9 @@ fn main() {
 		"7" => (),
 		_ => println!("Invalid option, try again."),
 	}
-	let exit: &str = &get_input("Exit installer? (y/n):");
+	let exit: &str = &get_input("Return to list of mods? (y/n) ");
 	match exit {
-		"n" => main(),
+		"y" => main(),
 		_ => (),
 	}
 }
@@ -59,8 +59,8 @@ fn run_exe(exe:&str,arg:&'static str,arg2:&'static str) {
 }
 fn print_options() {
 	assert!( std::process::Command::new("cls").status().or_else(|_| std::process::Command::new("clear").status()).unwrap().success() );
-	println!("Welcome to Torph's Shipbreaker mod installer script. If you've");
-	println!("used mods before, please verify your game files in Steam before");
+	println!("Welcome to Torph's Shipbreaker mod installer! If you've used");
+	println!("mods before, please verify your game files in Steam before");
 	println!("using, to avoid potential crashes.");
 	println!(" ");
 	println!(" ");
