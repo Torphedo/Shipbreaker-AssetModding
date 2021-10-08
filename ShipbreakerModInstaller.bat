@@ -5,15 +5,15 @@ if exist "emip\check.version4" goto :start
 if exist emip\ (rmdir /S /Q emip\)
 mkdir emip
 echo Downloading mod files...
-curl -# -o emip\Jupiter.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Jupiter.emip
-curl -# -o emip\Moon.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Moon.emip
-curl -# -o emip\NoBloom.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/NoBloom.emip
-curl -# -o emip\AlphaTitleScreen.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/AlphaTitleScreen.emip
-curl -# -o emip\ModdingSticker.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/ModdingSticker.emip
-curl -# -o emip\Cheats.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Cheats.xdelta
-curl -# -o emip\Carbon.Core.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/Carbon.Core.xdelta
-curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/mod_config.ini
-curl -# -o emip\check.version4 https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/check.version4
+curl -# -o emip\Jupiter.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Jupiter.emip
+curl -# -o emip\Moon.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Moon.emip
+curl -# -o emip\NoBloom.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/NoBloom.emip
+curl -# -o emip\AlphaTitleScreen.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/AlphaTitleScreen.emip
+curl -# -o emip\ModdingSticker.emip https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/ModdingSticker.emip
+curl -# -o emip\Cheats.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Cheats.xdelta
+curl -# -o emip\Carbon.Core.xdelta https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/Carbon.Core.xdelta
+curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
+curl -# -o emip\check.version4 https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/check.version4
 echo Downloading tools...
 curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
 curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
