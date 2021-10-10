@@ -5,33 +5,33 @@ if exist "emip\check.version5" goto :start
 if exist emip\ (rmdir /S /Q emip\)
 mkdir emip
 echo Downloading mod files...
-set file="Jupiter.emip"
+set file=Jupiter.emip
 call :curl_bin
-set file="Moon.emip"
+set file=Moon.emip
 call :curl_bin
-set file="NoBloom.emip"
+set file=NoBloom.emip
 call :curl_bin
-set file="AlphaTitleScreen.emip"
+set file=AlphaTitleScreen.emip
 call :curl_bin
-set file="ModdingSticker.emip"
+set file=ModdingSticker.emip
 call :curl_bin
-set file="BBI.Unity.Game.xdelta"
+set file=BBI.Unity.Game.xdelta
 call :curl_bin
-set file="Carbon.Core.xdelta"
+set file=Carbon.Core.xdelta
 call :curl_bin
-set file="check.version5"
+set file=check.version5
 call :curl_bin
-curl --parallel-immediate -Z -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
+curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
 echo Downloading tools...
-curl --parallel-immediate -Z -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
-curl --parallel-immediate -Z -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
+curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
+curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
 powershell -command "Expand-Archive emip\UABE.zip emip"
 ren emip\64bit UABE
 del emip\UABE.zip
 goto :start
 
 :curl_bin
-curl --parallel-immediate -Z -# -o emip\%file% https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/%file%
+curl -# -o emip\%file% https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/%file%
 exit /b
 
 :start
@@ -65,7 +65,8 @@ if %selection%==5 (
 	set DLL=Carbon.Core
 	call :delta_patch
 	echo Patch Applied.
-	goto :post_install
+	pause
+	goto :start
 )
 if %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
 if %selection%==7 (
@@ -91,9 +92,9 @@ if %selection%==7 (
 	if %map%==5 (set num1=14&set num2=9&call :scene_swap&set num1=8&set num2=6)
 	if %map%==6 (goto :start)
 	call :scene_swap
-	set /P return="Stay on map list? (y/n) "
-	if %return%==n (cd .. & goto :start)
-	if %return%==y (cls&goto :map_options)
+	pause
+	cls
+	goto :map_options
 )
 
 :delta_patch
@@ -116,8 +117,5 @@ exit /b
 :apply_emip
 UABE\AssetBundleExtractor applyemip %emip% ..
 echo Patch applied.
-
-:post_install
-set /P return="Return to list of mods? (y/n) "
-if %return%==y (cd .. & goto :start)
-if %return%==n (exit)
+pause
+goto :start
