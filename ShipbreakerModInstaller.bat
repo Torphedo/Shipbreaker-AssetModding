@@ -21,7 +21,6 @@ set file=Carbon.Core.xdelta
 call :curl_bin
 set file=check.version5
 call :curl_bin
-curl -# -o mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
 echo Downloading tools...
 curl -L -# -o emip\UABE.zip https://github.com/DerPopo/UABE/releases/download/2.2stabled/AssetsBundleExtractor_2.2stabled_64bit.zip
 curl -s -o emip\xdelta.exe https://raw.githubusercontent.com/marco-calautti/DeltaPatcher/master/xdelta.exe
@@ -49,26 +48,44 @@ echo      4. Alpha Title Screen
 echo      5. Cheats
 echo      6. Modding Sticker
 echo      7. Maps
-echo      8. Exit
+echo      8. Live Debugger (UnityExplorer)
+echo      9. Exit
 echo.
 echo.
 set /P selection="Select an option: "
 cls
-if %selection%==8 (exit)
-if %selection%==1 (set emip=Jupiter.emip & goto :apply_emip)
-if %selection%==2 (set emip=Moon.emip & goto :apply_emip)
-if %selection%==3 (set emip=NoBloom.emip & goto :apply_emip)
-if %selection%==4 (set emip=AlphaTitleScreen.emip & goto :apply_emip)
+if %selection%==9 (exit)
+if %selection%==1 (set emip=Jupiter.emip&goto :apply_emip)
+if %selection%==2 (set emip=Moon.emip&goto :apply_emip)
+if %selection%==3 (set emip=NoBloom.emip&goto :apply_emip)
+if %selection%==4 (set emip=AlphaTitleScreen.emip&goto :apply_emip)
 if %selection%==5 (
 	set DLL=BBI.Unity.Game
 	call :delta_patch
 	set DLL=Carbon.Core
 	call :delta_patch
+	curl -# -o ..\mod_config.ini https://raw.githubusercontent.com/Torphedo/Shipbreaker-AssetModding/main/bin/mod_config.ini
 	echo Patch Applied.
 	pause
 	goto :start
 )
-if %selection%==6 (set emip=ModdingSticker.emip & goto :apply_emip)
+if %selection%==6 (set emip=ModdingSticker.emip&goto :apply_emip)
+if %selection%==8 (
+	echo Downloading BepInEx...
+	curl -L -# -o ..\BepInEx.zip https://github.com/BepInEx/BepInEx/releases/download/v5.4.17/BepInEx_x64_5.4.17.0.zip
+	echo Downloading UnityExplorer...
+	curl -L -# -o ..\UnityExplorer.zip https://github.com/sinai-dev/UnityExplorer/releases/download/4.3.2/UnityExplorer.BepInEx5.Mono.zip
+	echo Extracting...
+	powershell -command "Expand-Archive ..\BepInEx.zip .."
+	mkdir BepInEx\plugins
+	powershell -command "Expand-Archive ..\UnityExplorer.zip ..\BepInEx\plugins"
+	del ..\BepInEx.zip
+	del ..\UnityExplorer.zip
+	del ..\changelog.txt
+	echo Installation Complete.
+	pause
+	goto :start
+)
 if %selection%==7 (
 	:map_options
 	copy Shipbreaker_Data\level6 Shipbreaker_Data\level14
