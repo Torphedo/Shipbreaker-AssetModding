@@ -1,7 +1,7 @@
 @echo off
 color 06
 :setup
-if exist "emip\check.version5" goto :start
+if exist "emip\check.version6" goto :start
 if exist emip\ (rmdir /S /Q emip\)
 mkdir emip
 echo Downloading mod files...
