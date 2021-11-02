@@ -1,6 +1,8 @@
 @echo off
 color 06
 
+if not exist emip\ goto :downloads
+
 :start
 cls
 echo Welcome to Torph's Shipbreaker mod installer! If you've used
