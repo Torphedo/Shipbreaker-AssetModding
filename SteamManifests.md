@@ -33,3 +33,5 @@ Now, here's a list of commands to download any version of Shipbreaker:
 0.6.0 (8 September 2021):           download_depot 1161580 1161581 5111811550026793644
 0.6.0 Hotfix 1 (15 September 2021): download_depot 1161580 1161581 6812541829101460488
 0.6.0 Hotfix 2 (20 September 2021): download_depot 1161580 1161581 938139117378700191
+0.7.0 (20 December 2021):           download_depot 1161580 1161581 893386787279489369
+0.7.0 Hotfix (21 December 2021):    download_depot 1161580 1161581 6752062871979614418
